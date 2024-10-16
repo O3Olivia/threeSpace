@@ -1,5 +1,4 @@
 {
-  "public" : "src",
   "routes" : [{"handle": "filesystem"}, {"src" : "/.*", "dest": "/index.html"}],
   "rewrites" : [{"sorce" :"/(.*)", "destination": "/"}]
 }
