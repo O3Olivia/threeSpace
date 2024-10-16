@@ -1,10 +1,7 @@
 import * as THREE from 'three';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-// import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
 import createPlanet from './planet';
-import ControlModeManager from './controller/controlModeManager';
-// import { KeyController } from './controller/keyController';
 import cat from './cat'
 import * as dat from 'dat.gui'
 
@@ -35,62 +32,25 @@ export default function spaceProject() {
 
 
 		// Controls
-	// const controls = new OrbitControls(camera, renderer.domElement)
-	// controls.enableDamping = true
-	// controls.autoRotate = true
-	// controls.autoRotateSpeed = 0.7
-
-
-	// const control = new PointerLockControls(camera, renderer.domElement)
-	// control.domElement.addEventListener("click", () => {
-	// 	control.lock()
-	// })
-	// control.addEventListener('lock', () => {
-	// 	console.log('lock')
-	// })
-	// control.addEventListener('unlock', () => {
-	// 	console.log('unlock')
-	// })
-	// control.addEventListener('change', () => {
-	// 	console.log('change')
-	// })
-
-
-	// const keyController = new KeyController()
-	// const keyControllKey = keyController.keys
-	// function keyboardWalk() {
-	// 	if (keyControllKey['KeyW'] || keyControllKey['ArrowUp']) {
-	// 		control.moveForward(0.15)
-	// 	}
-	// 	if (keyControllKey['KeyS'] || keyControllKey['ArrowDown']) {
-	// 		control.moveForward(-0.15)
-	// 	}
-	// 	if (keyControllKey['KeyA'] || keyControllKey['ArrowLeft'] ) {
-	// 		control.moveRight(-0.15)
-	// 	}
-	// 	if (keyControllKey['KeyD'] || keyControllKey['ArrowRight']) {
-	// 		control.moveRight(0.15)
-	// 	}
-	// }
+	const controls = new OrbitControls(camera, renderer.domElement)
+	controls.enableDamping = true
+	controls.autoRotate = true
+	controls.autoRotateSpeed = 0.7
 	
-
-	const controlManager = new ControlModeManager(camera, renderer, scene);
-  controlManager.setMode('orbit')
-	
-		const moonOrbitControl = {
-			rotate: true,
-			speed: 0.5
-		}
+	const moonOrbitControl = {
+		rotate: true,
+		speed: 0.5
+	}
 
 
 	const gui = new dat.GUI();
-  gui.add(camera.position, 'x', -50, 50).name('Camera X');
-  gui.add(camera.position, 'y', -45, 45).name('Camera Y');
-  gui.add(camera.position, 'z', -5, 5).name('Camera Z');
-  gui.add(moonOrbitControl, 'speed', 0, 2).name('Moon Orbit Speed');
-  gui.add(moonOrbitControl, 'rotate').name('Moon Orbit Rotation');
-  gui.add(controlManager.orbitControls, 'autoRotate').name('Camera Auto-Rotate');
-
+	gui.add(camera.position, 'x', -50, 50).name('Camera X');
+	gui.add(camera.position, 'y', -45, 45).name('Camera Y');
+	gui.add(camera.position, 'z', -5, 5).name('Camera Z');
+	gui.add(moonOrbitControl, 'speed', 0, 2).name('Moon Orbit Speed');
+	
+	gui.add(moonOrbitControl, 'rotate').name('Moon Orbit Rotation');
+	gui.add(controls, 'autoRotate').name('Camera Play');
 
 
 	// Light
@@ -219,6 +179,13 @@ export default function spaceProject() {
 	const dragControls = new DragControls([catCharacter], camera, renderer.domElement);
 	dragControls.transformGroup = true
 	dragControls.addEventListener('dragstart', (e) => {
+  controls.enabled = false;
+});
+
+dragControls.addEventListener('dragend', (e) => {
+  controls.enabled = true; 
+});
+	dragControls.addEventListener('dragstart', (e) => {
 		console.log(e.object.name); 
 	});
  
@@ -240,9 +207,7 @@ export default function spaceProject() {
 	function draw() {
 		const delta = clock.getDelta();
 
-		// controls.update()
-		ControlModeManager.update(delta)
-		keyboardWalk()
+		controls.update()
 
 		// star
 		stars.forEach((star) => {
