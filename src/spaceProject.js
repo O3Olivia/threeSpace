@@ -73,7 +73,12 @@ export default function spaceProject() {
 
 	
 
-
+	// const earthGeometry = new THREE.SphereGeometry(15, 32, 32)
+	// const earthMaterial = new THREE.MeshStandardMaterial({
+	// 	color: '1d657d',
+	// 	shininess: 20
+	// })
+	// const earth = new THREE.Mesh(earthGeometry, earthMaterial)
 	const earth = createPlanet({
     surface: {
       size: 15,
@@ -99,10 +104,10 @@ export default function spaceProject() {
 				
       },
       glow: {
-        size: 0.1,
-        intensity: 1.0,
-        fade: 1.9,
-        color: '#1d657b'
+        size: 0.35,
+        intensity: 1.06,
+        fade: 5,
+				color: '#1d657b'
       }
     }
   });

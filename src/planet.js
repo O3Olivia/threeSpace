@@ -74,7 +74,8 @@ function createPlanet({ surface, atmosphere }) {
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending,
       transparent: true,
-    });
+  });
+  
 
     const planetGlow = new THREE.Mesh(glowGeometry, glowMaterial);
     planetGroup.add(planetGlow);
